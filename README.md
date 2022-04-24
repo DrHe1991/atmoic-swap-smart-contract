@@ -7,15 +7,20 @@ npm install
 ```
 2. congiure the network setting in  `truffle-config`
 3. input Alice and Bob public address and the secret in `config.js`
-3. run the migration code to deploy the coin contract to fulfill step 1&2 in the procedures
+3. run the migration code to deploy the coin contract in `each` network to fulfill step 1&2 in the procedures
 ```console 
 truffle migrate --network {networkName}
 ```
-4. start the web app
+4. run test to see if the contract build and deployment is successful
+```console 
+truffle test --network {networkName}
+```
+5. start the web app
 ```console 
 npm run start
 ```
-5. open `localhost:3000` and follow step3 to finish the swap
+6. open `localhost:3000` in broswer and follow step3 to finish the swap
+
 
 ## Procedures
 ### Prerequisite
@@ -33,4 +38,11 @@ npm run start
 11. Alice will be able to withdraw tokenA as she knows the secret now
 12. Alice can always get the refund from the smart contract after a certain amount of time if Bob didn't withdraw and release the secret
 
->note in step 4&5, Alice will always deploy the smart contract with much longer time frame than Bob, it will make Alice have enough time to withdraw money from the contract, even if Bob withdraws in the last minute in his time frame
+>note: in step 4&5, Alice will always deploy the smart contract with much longer time frame than Bob, it will make Alice have enough time to withdraw money from the contract, even if Bob withdraws in the last minute in his time frame
+
+## Todos
+* Run this in a public chain such as Ropsten or Kovan
+>note: current version code was tested and proven functional in a local environment only
+* More test case for the smart contract
+* Use a framework on frontend and beatify the UI
+* Write test cases for the web server
