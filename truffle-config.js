@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
+const fs = require('fs');
+const mnemonic = fs.readFileSync(".secret").toString().trim();
+ 
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -51,6 +51,22 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     },
+    ropsten: {
+      provider: new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/fb0612bccf534d31bbb7f4f4a24cda00`),
+      network_id: 3,       // Ropsten's id
+      gas: 10000000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 2000,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
+    kovan: {
+      provider: new HDWalletProvider(mnemonic, `https://kovan.infura.io/v3/fb0612bccf534d31bbb7f4f4a24cda00`),
+      network_id: "*",       // Ropsten's id
+      gas: 10000000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 2000,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

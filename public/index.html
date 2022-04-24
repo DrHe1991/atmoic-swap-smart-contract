@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <button id="ShowBalanceButton">Show Balance</button>
+    <button id="RevealSecret">Reveal Secret</button>
+    <form id="Form" action="" method="POST">
+        <label for="fname">secret:</label>
+        <input type="text" id="tokenid" name="token"><br><br>
+        <label for="lname">Address:</label>
+        <input type="text" id="addressid" name="address"><br><br>
+        <label for="lname">chain:</label>
+        <select  id="chain" name="chain"><option value="1">1</option><option value="2">2</option></select><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <h2>Balances</h2>
+    <div id="balanceDisplay">
+
+        <h3>chain1</h3>
+        <table>
+            <tr>
+                <td>contract</td>
+                <td id="chain1contract"></td>
+            </tr>
+            <tr>
+                <td>alice:</td>
+                <td id="chain1alice"></td>
+            </tr>
+            <tr>
+                <td>bob:</td>
+                <td id="chain1bob"></td>
+            </tr>
+        </table>
+        <h3>chain2</h3>
+        <table>
+            <tr>
+                <td>contract:</td>
+                <td id="chain2contract"></td>
+            </tr>
+            <tr>
+                <td>alice:</td>
+                <td id="chain2alice"></td>
+            </tr>
+            <tr>
+                <td>bob:</td>
+                <td id="chain2bob"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    RevealSecret.addEventListener('click', () => {
+        revealSecret()
+    });
+    ShowBalanceButton.addEventListener('click', () => {
+        updateBalanceDisplay();
+    });
+    updateBalanceDisplay()
+    function revealSecret() {
+        axios.get('http://localhost:3000/revealSecret')
+            .then(r => {
+                alert('Your withdraw secret is' + ' \'' + r.data + '\'')
+            })
+            .catch((err) => {
+                alert(err)
+            });
+    }
+    function updateBalanceDisplay() {
+
+        axios.get('http://localhost:3000/showBalance')
+            .then(r => {
+                console.log(r)
+
+                chain1contract.innerText = r.data.chain1.contract;
+                chain1alice.innerText = r.data.chain1.alice;
+                chain1bob.innerText = r.data.chain1.bob;
+                chain2contract.innerText = r.data.chain2.contract;
+                chain2alice.innerText = r.data.chain2.alice;
+                chain2bob.innerText = r.data.chain2.bob;
+            })
+            .catch((err) => {
+                alert(err)
+            });
+    }
+    Form.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const formData = new FormData(event.target);
+        const formProps = Object.fromEntries(formData);
+        const { token, address,chain } = formProps
+        axios.post('http://localhost:3000/withdraw', {
+            token,
+            address,
+            chain
+        })
+            .then(res => {
+                console.log(res)
+                updateBalanceDisplay();
+            })
+            .catch((err) => {
+                alert(err)
+            });
+    });
+</script>
+</script>
+
+</html>
