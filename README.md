@@ -1,5 +1,22 @@
 # An atomic swap smart contract using hashed time lock
 
+## Installation
+1. install the dependancys
+```console 
+npm install
+```
+2. congiure the network setting in  `truffle-config`
+3. input Alice and Bob public address and the secret in `config.js`
+3. run the migration code to deploy the coin contract to fulfill step 1&2 in the procedures
+```console 
+truffle migrate --network {networkName}
+```
+4. start the web app
+```console 
+npm run start
+```
+5. open `localhost:3000` and follow step3 to finish the swap
+
 ## Procedures
 ### Prerequisite
 1. deploy a tokenA smart contract on chain1 for Bob, given him one tokenA for swap
@@ -17,7 +34,3 @@
 12. Alice can always get the refund from the smart contract after a certain amount of time if Bob didn't withdraw and release the secret
 
 >note in step 4&5, Alice will always deploy the smart contract with much longer time frame than Bob, it will make Alice have enough time to withdraw money from the contract, even if Bob withdraws in the last minute in his time frame
-
-
-## Installation
-`npm install`
