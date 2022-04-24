@@ -12,16 +12,10 @@ module.exports = async function (deployer, network) {
     await deployer.deploy(Token, 'Token A', 'TokenA', { from: bob1 });
     const tokenA = await Token.deployed();
     await deployer.deploy(AtomicTransfer, alice1, tokenA.address, 1, secretHash, 60 * 60 * 24, { from: bob1 });
-    const atomicTransfer = await AtomicTransfer.deployed();
-    await tokenA.approve(atomicTransfer.address, 1, { from: bob1 });
-    await atomicTransfer.fund({ from: bob1 });
   }
   if (network === 'development2') {
     await deployer.deploy(Token, 'Token B', 'TokenB', { from: alice2 });
     const tokenB = await Token.deployed();
     await deployer.deploy(AtomicTransfer, bob2, tokenB.address, 1, secretHash, 60 * 60 * 6, { from: alice2 });
-    const atomicTransfer = await AtomicTransfer.deployed();
-    await tokenB.approve(atomicTransfer.address, 1, { from: alice2 });
-    await atomicTransfer.fund({ from: alice2 });
   }
 };

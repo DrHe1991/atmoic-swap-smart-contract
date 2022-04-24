@@ -18,10 +18,12 @@ let TokenContract1Address;
 let TokenContract2Address;
 let AtomicTransferContract1Address;
 let AtomicTransferContract2Address;
+let web31;
+let web32
 
 const init = async () => {
-    const web31 = new Web3("ws://localhost:7545");
-    const web32 = new Web3("ws://localhost:8545");
+    web31 = new Web3("ws://localhost:7545");
+    web32 = new Web3("ws://localhost:8545");
     const networkId1 = await web31.eth.net.getId();
     const networkId2 = await web32.eth.net.getId();
     TokenContract1Address = TokenContract.networks[networkId1].address
@@ -68,6 +70,22 @@ app.get('/showBalance', async (req, res) => {
     res.status(200).send(result)
 })
 
+app.post('/fund', async (req, res) => {
+    const { chain, address } = req.body
+    try {
+        if (chain == '1') {
+            await TokenContract1.methods.approve(AtomicTransferContract1Address, 1).call({ from: address })
+            await AtomicTransferContract1.methods.fund().send({ gas: 1500000, gasPrice: 1172098, from: address })
+        } else {
+            await TokenContract2.methods.approve(AtomicTransferContract2Address, 1).call({ from: address })
+            await AtomicTransferContract2.methods.fund().send({ gas: 15000000, gasPrice: 5000000, from: address })
+        }
+    } catch (err) {
+        return res.send(err)
+    }
+    res.status(200).send('ok')
+})
+
 app.post('/withdraw', async (req, res) => {
     const { chain, token, address } = req.body
     try {
@@ -95,7 +113,6 @@ const showBalance = async () => {
     addressArray1 = [AtomicTransferContract1Address, bob1, alice1]
     addressArray2 = [AtomicTransferContract2Address, bob2, alice2]
     const [vAtomicTransferContract1Address, vbob1, valice1] = await Promise.all(addressArray1.map(async a => {
-        console.log(a)
         return TokenContract1.methods.balanceOf(a).call()
     }))
 

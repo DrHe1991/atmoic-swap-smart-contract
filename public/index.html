@@ -1,22 +1,50 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+<head>
+    <title>Atomic Transfer</title>
+    <style>
+        form,#balanceDisplay, .section{
+            border: 1px solid #aaa;
+            padding: 4px;
+            margin-bottom: 4px;
+        }
+        input, button, label, select{
+            margin:4px;
+            padding:4px;
+        }
+        tr, td{
+            border:1px solid #aaa;
+        }
+    </style>
+</head>
 
 <body>
-    <button id="ShowBalanceButton">Show Balance</button>
-    <button id="RevealSecret">Reveal Secret</button>
+    <h1>Atomic Transfer</h1>
+    <form id="fundForm" action="" method="POST">
+        <h2>funding the contract</h2>
+        <label for="lname">from address:</label>
+        <input type="text" id="address" name="address"><br><br>
+        <label for="lname">chain:</label>
+        <select  id="chain" name="chain"><option value="1">1</option><option value="2">2</option></select><br><br>
+        <input type="submit" value="fund">
+    </form>
     <form id="Form" action="" method="POST">
+        <h2>withdraw</h2>
         <label for="fname">secret:</label>
         <input type="text" id="tokenid" name="token"><br><br>
         <label for="lname">Address:</label>
         <input type="text" id="addressid" name="address"><br><br>
         <label for="lname">chain:</label>
         <select  id="chain" name="chain"><option value="1">1</option><option value="2">2</option></select><br><br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="withdraw">
     </form>
-    <h2>Balances</h2>
-    <div id="balanceDisplay">
+    <div class="section">
+        <button id="RevealSecret">Reveal Secret</button>
+    </div>
+    <div class="section" id="balanceDisplay">
+        <h2>balances</h2>
+        <button id="ShowBalanceButton">Show Balance</button>
 
         <h3>chain1</h3>
         <table>
@@ -72,8 +100,6 @@
 
         axios.get('http://localhost:3000/showBalance')
             .then(r => {
-                console.log(r)
-
                 chain1contract.innerText = r.data.chain1.contract;
                 chain1alice.innerText = r.data.chain1.alice;
                 chain1bob.innerText = r.data.chain1.bob;
@@ -96,7 +122,22 @@
             chain
         })
             .then(res => {
-                console.log(res)
+                updateBalanceDisplay();
+            })
+            .catch((err) => {
+                alert(err)
+            });
+    });
+    fundForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const formData = new FormData(event.target);
+        const formProps = Object.fromEntries(formData);
+        const { address, chain } = formProps
+        axios.post('http://localhost:3000/fund', {
+            address,
+            chain
+        })
+            .then(res => {
                 updateBalanceDisplay();
             })
             .catch((err) => {
