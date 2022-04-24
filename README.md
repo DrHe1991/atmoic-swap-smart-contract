@@ -1,25 +1,32 @@
 # An atomic swap smart contract using hashed time lock
 
 ## Installation
-1. install the dependancys
-```console 
+1. install [node.js](https://nodejs.org/en/)
+2. install Truffle globally
+```
+npm install -g truffle
+```
+3. install the dependancys
+```
+git clone {url}
+cd ./{pathToDir}
 npm install
 ```
-2. congiure the network setting in  `truffle-config`
-3. input Alice and Bob public address and the secret in `config.js`
-3. run the migration code to deploy the coin contract in `each` network to fulfill step 1&2 in the procedures
-```console 
+4. congiure the network setting in  `truffle-config`, start the test blockchain server such as [ganache](https://trufflesuite.com/ganache/) if needed
+5. input Alice and Bob public address and the secret in `config.js`
+6. run the migration code to deploy the coin contract in `each` network to fulfill step 1&2 in the procedures
+``` 
 truffle migrate --network {networkName}
 ```
-4. run test to see if the contract build and deployment is successful
-```console 
+7. run test to see if the contract build and deployment is successful
+``` 
 truffle test --network {networkName}
 ```
-5. start the web app
-```console 
+8. start the web app
+``` 
 npm run start
 ```
-6. open `localhost:3000` in broswer and follow step3 to finish the swap
+9. open `localhost:3000` in broswer and follow step3 to finish the swap
 
 
 ## Procedures
